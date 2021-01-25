@@ -38,6 +38,9 @@ namespace IdentityService
             }
 
             app.UseRouting();
+            app.UseRequestLocalization(
+                new RequestLocalizationOptions()
+                .SetDefaultCulture("se-SE"));
 
             app.UseEndpoints(endpoints =>
             {

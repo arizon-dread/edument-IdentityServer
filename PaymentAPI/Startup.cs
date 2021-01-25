@@ -39,7 +39,9 @@ namespace PaymentAPI
             }
 
             app.UseRouting();
-
+            app.UseRequestLocalization(
+                new RequestLocalizationOptions()
+                .SetDefaultCulture("se-SE"));
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
