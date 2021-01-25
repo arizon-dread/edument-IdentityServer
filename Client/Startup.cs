@@ -39,6 +39,9 @@ namespace Client
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseRequestLocalization(
+                new RequestLocalizationOptions()
+                .SetDefaultCulture("se-SE"));
 
             app.UseAuthorization();
 
