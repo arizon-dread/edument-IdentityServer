@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace IdentityService
 {
@@ -38,7 +39,10 @@ namespace IdentityService
 
             var builder = services.AddIdentityServer(options =>
             {
-
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseSuccessEvents = true;
             }).AddTestUsers(TestUsers.Users)
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
@@ -57,6 +61,7 @@ namespace IdentityService
             {
                 app.UseHsts();
             }
+            app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseSecurityHeaders();
 
