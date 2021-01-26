@@ -24,6 +24,7 @@ namespace Infrastructure
             Console.WriteLine($"Adding HTTPS Support with the certificate named '{certName}' in Azure Key Vault");
             webBuilder.UseKestrel((context, serverOptions) =>
                {
+                   serverOptions.AddServerHeader = false;
                    serverOptions.Listen(IPAddress.Any, 80);
 
                    serverOptions.Listen(IPAddress.Any, 443,
@@ -41,7 +42,7 @@ namespace Infrastructure
                                    httpsOptions.OnAuthenticate = (conContext, sslAuthentication) =>
                                    {
                                        sslAuthentication.CipherSuitesPolicy = cipherSuitesPolicy;
-                                   }
+                                   };
                                }
                            });
                        });

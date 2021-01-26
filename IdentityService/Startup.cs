@@ -27,6 +27,11 @@ namespace IdentityService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHsts(opts =>
+            {
+                opts.IncludeSubDomains = true;
+                opts.MaxAge = TimeSpan.FromSeconds(15768000);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,9 +40,13 @@ namespace IdentityService
             if (!env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
+            } else
+            {
+                app.UseHsts();
             }
-
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseSecurityHeaders();
             app.UseRequestLocalization(
                 new RequestLocalizationOptions()
                 .SetDefaultCulture("se-SE"));
