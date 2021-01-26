@@ -44,6 +44,7 @@ namespace IdentityService
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients);
             builder.AddDeveloperSigningCredential();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +76,7 @@ namespace IdentityService
             {
                 endpoints.MapDefaultControllerRoute();
             });
+            
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapGet("/", async context =>
