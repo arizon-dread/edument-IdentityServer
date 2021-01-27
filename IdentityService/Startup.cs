@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServerHost.Quickstart.UI;
 using IdentityServerInMem;
+using IdentityService.Configuration;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,7 +47,7 @@ namespace IdentityService
             }).AddTestUsers(TestUsers.Users)
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients);
+                .AddInMemoryClients(Clients.GetClients());
             builder.AddDeveloperSigningCredential();
             
         }
@@ -64,7 +65,7 @@ namespace IdentityService
             }
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
-            app.UseSecurityHeaders();
+            
 
             app.UseRouting();
            
@@ -75,6 +76,7 @@ namespace IdentityService
             app.UseStaticFiles();
 
             app.UseIdentityServer();
+            app.UseSecurityHeaders();
 
             app.UseAuthorization();
 
