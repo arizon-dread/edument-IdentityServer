@@ -8,6 +8,13 @@
 		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Views\Home\Error.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
