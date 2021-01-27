@@ -46,6 +46,7 @@ namespace Client
                 app.UseHsts();
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseStatusCodePagesWithReExecute(pathFormat: "/error", queryFormat: "?error={0}");
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseSecurityHeaders();
