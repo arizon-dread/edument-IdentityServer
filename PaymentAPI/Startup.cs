@@ -32,7 +32,7 @@ namespace PaymentAPI
         {
             if (_environment.EnvironmentName != "Offline")
             {
-                services.AddDataProtectionWithSqlServer(_configuration);
+                services.AddDataProtectionWithSqlServerForPaymentApi(_configuration);
             }
             services.AddHsts(opts =>
             {
