@@ -11,6 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentAPI", "PaymentAPI\Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E30F616C-958B-4925-968D-14157805729F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dockerfiles", "Dockerfiles", "{E481481E-7E74-4C33-ACD8-0765ED556F63}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile_client = Dockerfile_client
+		Dockerfile_identityservice = Dockerfile_identityservice
+		Dockerfile_paymentapi = Dockerfile_paymentapi
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
