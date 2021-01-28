@@ -19,6 +19,7 @@ namespace IdentityService.Configuration
                 RequirePkce = true,
                 AllowOfflineAccess = true, //Accept refresh tokens
 
+
                 ClientSecrets = new List<Secret>
                 {
                     new Secret
