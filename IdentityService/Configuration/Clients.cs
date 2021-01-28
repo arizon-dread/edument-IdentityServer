@@ -24,8 +24,8 @@ namespace IdentityService.Configuration
                 {
                     new Secret
                     {
-                        Value = Config.StaticConfig["ClientSecret"]?.Sha256()
-                        //Value = "mysecret".Sha512()
+                        //Value = Config.StaticConfig["ClientSecret"]?.Sha256()
+                        Value = "mysecret".Sha512()
                     }
                 },
 
@@ -84,8 +84,8 @@ namespace IdentityService.Configuration
                 {
                     new Secret
                     {
-                        Value = Config.StaticConfig["ClientSecret"]?.Sha256()
-                       // Value = "mysecret".Sha512()
+                        //Value = Config.StaticConfig["ClientSecret"]?.Sha256()
+                        Value = "mysecret".Sha512()
                     }
                 },
 

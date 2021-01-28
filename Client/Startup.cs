@@ -57,7 +57,8 @@ namespace Client
                 {
                     options.Authority = _configuration["openid:authority"];// "https://localhost:6001"; //"https://student3-identityservice.webapi.se/";
                     options.ClientId = _configuration["openid:clientid"];// "authcodeflowclient";
-                    options.ClientSecret = _configuration["oidc-client-secret"];
+                    //options.ClientSecret = _configuration["oidc-client-secret"];
+                    options.ClientSecret = "mysecret";
                     options.ResponseType = "code";
 
                     options.Scope.Clear();
