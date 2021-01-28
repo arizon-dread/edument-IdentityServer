@@ -37,7 +37,7 @@ namespace IdentityService
                 opts.MaxAge = TimeSpan.FromSeconds(15768000);
             });
             services.AddControllersWithViews();
-
+            Config.StaticConfig = _configuration;
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -84,6 +84,7 @@ namespace IdentityService
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
             
             //app.UseEndpoints(endpoints =>
             //{

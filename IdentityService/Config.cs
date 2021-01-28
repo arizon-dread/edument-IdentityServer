@@ -3,12 +3,14 @@
 
 
 using Duende.IdentityServer.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace IdentityServerInMem
 {
     public static class Config
     {
+        public static IConfiguration StaticConfig { get; set; }
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
             {

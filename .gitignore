@@ -351,3 +351,4 @@ MigrationBackup/
 
 # Seq logs
 */seq*
+/IdentityService/keys/is-signing-key-3FA0274B08421C8E3C7232B20765C063.json

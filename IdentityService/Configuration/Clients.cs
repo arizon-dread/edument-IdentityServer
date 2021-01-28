@@ -1,5 +1,8 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using IdentityServerInMem;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 
 namespace IdentityService.Configuration
@@ -20,7 +23,8 @@ namespace IdentityService.Configuration
                 {
                     new Secret
                     {
-                        Value = "mysecret".Sha512()
+                        Value = Config.StaticConfig["oidc-client-secret"]?.Sha256()
+                        //Value = "mysecret".Sha512()
                     }
                 },
 
@@ -79,7 +83,8 @@ namespace IdentityService.Configuration
                 {
                     new Secret
                     {
-                        Value = "mysecret".Sha512()
+                        Value = Config.StaticConfig["oidc-client-secret"]?.Sha256()
+                       // Value = "mysecret".Sha512()
                     }
                 },
 
