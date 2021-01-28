@@ -26,7 +26,7 @@ namespace Infrastructure
             string clientId = builtConfig["Vault:ClientId"] ?? "";
             string tenantId = builtConfig["Vault:TenantId"] ?? "";
             string secret = builtConfig["Vault:Secret"] ?? "";
-            string oidcClientId = builtConfig["Vault:oidc-client-secret"] ?? ""; 
+            string oidcClientId = builtConfig["oidc-client-secret"] ?? ""; 
 
             Console.WriteLine("Adding AzureKeyVault Support");
 
