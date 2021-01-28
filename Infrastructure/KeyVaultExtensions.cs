@@ -26,7 +26,7 @@ namespace Infrastructure
             string clientId = builtConfig["Vault:ClientId"] ?? "";
             string tenantId = builtConfig["Vault:TenantId"] ?? "";
             string secret = builtConfig["Vault:Secret"] ?? "";
-            string oidcClientId = builtConfig["oidc-client-secret"] ?? ""; 
+            string clientSecret = builtConfig["ClientSecret"] ?? ""; 
 
             Console.WriteLine("Adding AzureKeyVault Support");
 
@@ -34,7 +34,7 @@ namespace Infrastructure
             CheckIfValueIsProvided(clientId, nameof(clientId), sensitiveValue: true);
             CheckIfValueIsProvided(tenantId, nameof(tenantId), sensitiveValue: true);
             CheckIfValueIsProvided(secret, nameof(secret), sensitiveValue: true);
-            CheckIfValueIsProvided(oidcClientId, nameof(oidcClientId), sensitiveValue: true);
+            CheckIfValueIsProvided(clientSecret, nameof(clientSecret), sensitiveValue: true);
 
             config.AddAzureKeyVault(new Uri(vaultUrl), new ClientSecretCredential(tenantId, clientId, secret));
 

@@ -114,19 +114,19 @@ namespace Infrastructure
                             theme: AnsiConsoleTheme.Code)
 
                         //Comment out writeTo.Seq if you don't want to send log traffic to Seq during development
-                        .WriteTo.Seq(serverUrl: seqServerUrl,
-                            restrictedToMinimumLevel: LogEventLevel.Debug,
-                            batchPostingLimit: 1000,
-                            period: TimeSpan.FromSeconds(5),
-                            apiKey: "",
-                            bufferBaseFilename: "seq-buffer.txt",
-                            bufferSizeLimitBytes: 1000000,
-                            eventBodyLimitBytes: 262144,
-                            controlLevelSwitch: null,
-                            messageHandler: null,
-                            retainedInvalidPayloadsLimitBytes: null,
-                            compact: false,
-                            queueSizeLimit: 100000)
+                        //.WriteTo.Seq(serverUrl: seqServerUrl,
+                        //    restrictedToMinimumLevel: LogEventLevel.Debug,
+                        //    batchPostingLimit: 1000,
+                        //    period: TimeSpan.FromSeconds(5),
+                        //    apiKey: "",
+                        //    bufferBaseFilename: "seq-buffer.txt",
+                        //    bufferSizeLimitBytes: 1000000,
+                        //    eventBodyLimitBytes: 262144,
+                        //    controlLevelSwitch: null,
+                        //    messageHandler: null,
+                        //    retainedInvalidPayloadsLimitBytes: null,
+                        //    compact: false,
+                        //    queueSizeLimit: 100000)
                         .CreateLogger();
                     break;
             }
