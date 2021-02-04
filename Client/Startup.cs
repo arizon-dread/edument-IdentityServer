@@ -66,6 +66,8 @@ namespace Client
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
                     options.Scope.Add("offline_access");
+                    options.Scope.Add("employee");
+                    options.Scope.Add("payment");
 
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.SaveTokens = true;
