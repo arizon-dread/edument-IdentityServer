@@ -11,20 +11,20 @@ namespace IdentityServerInMem
     public static class Config
     {
         public static IConfiguration StaticConfig { get; set; }
-        public static IEnumerable<IdentityResource> IdentityResources =>
-            new IdentityResource[]
-            {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                new IdentityResources.Email(),
-            };
+        //public static IEnumerable<IdentityResource> IdentityResources =>
+        //    new IdentityResource[]
+        //    {
+        //        new IdentityResources.OpenId(),
+        //        new IdentityResources.Profile(),
+        //        new IdentityResources.Email(),
+        //    };
 
-        public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
-            {
-                new ApiScope("scope1"),
-                new ApiScope("scope2"),
-            };
+        //public static IEnumerable<ApiScope> ApiScopes =>
+        //    new ApiScope[]
+        //    {
+        //        new ApiScope("scope1"),
+        //        new ApiScope("scope2"),
+        //    };
 
         
     }

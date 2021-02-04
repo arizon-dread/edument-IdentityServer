@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using IdentityServerHost.Quickstart.UI;
 using IdentityServerInMem;
 using IdentityService.Configuration;
+using IdentityService.Configuration.Clients;
+using IdentityService.Configuration.Resources;
 using Infrastructure;
 using Infrastructure.DataProtection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -50,10 +53,40 @@ namespace IdentityService
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             }).AddTestUsers(TestUsers.Users)
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Clients.GetClients());
-            builder.AddDeveloperSigningCredential();
+                .AddInMemoryIdentityResources(IdentityResourceData.Resources())
+                .AddInMemoryApiScopes(ApiScopeData.Resources())
+                .AddInMemoryClients(ClientData.GetClients())
+                .AddOperationalStore(options => 
+                {
+                    options.ConfigureDbContext = b =>
+                    {
+                        options.ConfigureDbContext = c => //Varför 2 ggr?
+                            c.UseSqlServer(_configuration["ConnectionString"]);
+                    };
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.EnableTokenCleanup = true;
+                    //The number of records to remove each time, default 100.
+                    options.TokenCleanupBatchSize = 100;
+                    options.TokenCleanupInterval = 3600; //Seconds
+
+                    options.ConfigureDbContext = b =>
+                    {
+                        options.ConfigureDbContext = c =>
+                        {
+                            c.UseSqlServer(_configuration["ConnectionString"]);
+                        };
+                    };
+                });
+            if (_environment.EnvironmentName != "Offline")
+            {
+                builder.AddProductionSigningCredential(_configuration);
+            }
+            else
+            {
+                builder.AddDeveloperSigningCredential();
+            }
             
         }
 

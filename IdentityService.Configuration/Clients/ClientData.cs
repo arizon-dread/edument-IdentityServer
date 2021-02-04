@@ -1,13 +1,10 @@
-﻿using Duende.IdentityServer;
+﻿using System.Collections.Generic;
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using IdentityServerInMem;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
 
-namespace IdentityService.Configuration
+namespace IdentityService.Configuration.Clients
 {
-    public class Clients
+    public class ClientData
     {
         public static IEnumerable<Client> GetClients()
         {
@@ -44,13 +41,13 @@ namespace IdentityService.Configuration
                 RedirectUris =
                 {
                     "https://localhost:5001/signin-oidc",
-                    "https://student3-client.webapi.se/signin-oidc"
+                    "https://localhost:5002/signin-oidc"
                 },
 
                 PostLogoutRedirectUris =
                 {
                     "https://localhost:5001/signout-callback-oidc",
-                    "https://student3-client.webapi.se/signout-callback-oidc"
+                    "https://localhost:5002/signout-callback-oidc"
                 },
                 FrontChannelLogoutUri = "https://localhost:5001/signout-oidc",
 
@@ -64,12 +61,13 @@ namespace IdentityService.Configuration
                     IdentityServerConstants.StandardScopes.Email,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Phone,
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
                 },
 
                 AllowedCorsOrigins =
                 {
                     "https://localhost:5001",
-                    "https://student3-client.webapi.se"
+                    "https://localhost:5002"
                 }
             };
             var clientProd = new Client
@@ -122,6 +120,7 @@ namespace IdentityService.Configuration
                     IdentityServerConstants.StandardScopes.Email,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Phone,
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
                 },
 
                 AllowedCorsOrigins =
@@ -129,6 +128,7 @@ namespace IdentityService.Configuration
                     "https://student3-client.webapi.se"
                 }
             };
+            //Copy the client data from IdentityService\Configuration\Clients.cs file
 
             return new List<Client>()
             {
@@ -136,5 +136,6 @@ namespace IdentityService.Configuration
                 clientProd
             };
         }
+
     }
 }
