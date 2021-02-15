@@ -81,6 +81,8 @@ namespace Client
                         NameClaimType = JwtClaimTypes.Name,
                         RoleClaimType = JwtClaimTypes.Role,
                     };
+                    options.BackchannelHttpHandler = new BackChannelListener();
+                    options.BackchannelTimeout = TimeSpan.FromSeconds(5);
                 });
         }
 
