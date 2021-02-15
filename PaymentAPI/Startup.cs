@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
+using PaymentAPI.Middleware;
 using Serilog;
 
 namespace PaymentAPI
@@ -82,12 +83,15 @@ namespace PaymentAPI
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseSerilogRequestLogging();
+            app.UseWaitForIdentityServer(new WaitForIdentityServerOptions()
+            { Authority = _configuration["openid:authority"] });
             app.UseHttpsRedirection();
             app.UseSecurityHeaders();
             app.UseRouting();
             app.UseRequestLocalization(
                 new RequestLocalizationOptions()
                 .SetDefaultCulture("se-SE"));
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
