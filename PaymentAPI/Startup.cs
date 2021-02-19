@@ -57,6 +57,7 @@ namespace PaymentAPI
                         RoleClaimType = JwtClaimTypes.Role,
                     };
                     opts.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+                    opts.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(1);
                     opts.IncludeErrorDetails = true;
                     opts.BackchannelHttpHandler = new BackChannelListener();
                     opts.BackchannelTimeout = TimeSpan.FromSeconds(5);

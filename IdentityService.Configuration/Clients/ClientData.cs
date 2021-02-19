@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
@@ -75,6 +76,8 @@ namespace IdentityService.Configuration.Clients
                 // be added to the id token instead of requiring the client to use the UserInfo endpoint.
                 // Defaults to false.
                 AlwaysIncludeUserClaimsInIdToken = false,
+                RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                AccessTokenLifetime = 45,
 
                 //Specifies whether this client is allowed to receive access tokens via the browser. 
                 //This is useful to harden flows that allow multiple response types 
