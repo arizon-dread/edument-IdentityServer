@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IdentityModel;
 using Infrastructure;
 using Infrastructure.DataProtection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 using Serilog;
+using SessionStore;
 
 namespace Client
 {
@@ -58,6 +61,12 @@ namespace Client
                 {
                     options.LogoutPath = "/User/Logout";
                     options.AccessDeniedPath = "/User/AccessDenied";
+                    options.SessionStore = new MySessionStore();
+                    options.Events.OnSigningOut = async e =>
+                    {
+                        // revoke refresh token on sign-out
+                        await e.HttpContext.RevokeUserRefreshTokenAsync();
+                    };
                 })
                 .AddOpenIdConnect(options =>
                 {
@@ -90,7 +99,26 @@ namespace Client
                     options.BackchannelHttpHandler = new BackChannelListener();
                     options.BackchannelTimeout = TimeSpan.FromSeconds(5);
                 });
-            
+            // adds user and client access token management
+            services.AddAccessTokenManagement(options =>
+            {
+                options.User.RefreshBeforeExpiration = TimeSpan.FromSeconds(5);
+            })
+                .ConfigureBackchannelHttpClient()
+                    .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(new[]
+                    {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(3)
+                    }));
+            // registers HTTP client that uses the managed user access token
+            services.AddUserAccessTokenClient("paymentapi", client =>
+            {
+                client.BaseAddress = new Uri(_configuration["paymentApiUrl"]);
+                client.Timeout = TimeSpan.FromSeconds(5);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

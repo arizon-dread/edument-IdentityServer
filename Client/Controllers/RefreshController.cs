@@ -47,46 +47,82 @@ namespace Client.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> GetData()
+        //{
+        //    try
+        //    {
+        //        var accessToken = await HttpContext.GetTokenAsync("access_token");
+        //        var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
+
+        //        if (string.IsNullOrEmpty(refreshToken))
+        //        {
+        //            return Content("{ \"name\":" + "\"Refresh token missing, please login again\" }");
+        //        }
+
+
+        //        var tokenHandler = new JwtSecurityTokenHandler();
+        //        var token = tokenHandler.ReadJwtToken(accessToken);
+        //        var ValidFrom = token.ValidFrom;
+        //        var ValidTo = token.ValidTo;
+
+        //        //var expiresAt = DateTimeOffset.Parse(await HttpContext.GetTokenAsync("expires_at"));
+
+        //        int tokenExpiresInSec = CalculateWhenTokenExpires(accessToken ?? "");
+
+        //        if (tokenExpiresInSec < 5)
+        //        {
+        //            accessToken = GetNewAccessToken(refreshToken).Result;
+        //        }
+
+        //        HttpClient? client = _httpClientFactory.CreateClient("paymentapi");
+        //        client.SetBearerToken(accessToken);
+
+        //        var content = await client.GetStringAsync("/payments/get");
+
+        //        var json = JObject.Parse(content);
+        //        json.TryGetValue("name", out var value);
+        //        string name = value.ToString();
+
+        //        string str = "Got Data " + name + " (Access token exires in " + ((int)tokenExpiresInSec).ToString() + " sec)";
+
+        //        return Content("{ \"name\":" + "\"" + str + "\" }");
+
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        return Content("{ \"name\":" + "\"" + exc.Message + "\" }");
+        //    }
+        //}
+
+
+
+        //private int CalculateWhenTokenExpires(string accessToken)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var token = tokenHandler.ReadJwtToken(accessToken);
+        //    //var ValidFrom = token.ValidFrom;
+        //    var ValidTo = token.ValidTo;
+        //    var tokenExpiresInSec = (int)ValidTo.Subtract(DateTime.UtcNow).TotalSeconds;
+
+        //    return tokenExpiresInSec;
+        //}
+
         public async Task<IActionResult> GetData()
         {
             try
             {
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
-
-                if (string.IsNullOrEmpty(refreshToken))
-                {
-                    return Content("{ \"name\":" + "\"Refresh token missing, please login again\" }");
-                }
-
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.ReadJwtToken(accessToken);
-                var ValidFrom = token.ValidFrom;
-                var ValidTo = token.ValidTo;
-
-                //var expiresAt = DateTimeOffset.Parse(await HttpContext.GetTokenAsync("expires_at"));
-
-                int tokenExpiresInSec = CalculateWhenTokenExpires(accessToken ?? "");
-
-                if (tokenExpiresInSec < 5)
-                {
-                    accessToken = GetNewAccessToken(refreshToken).Result;
-                }
+                int tokenExpiresInSec = CalculateWhenAccessTokenExpires();
 
                 HttpClient? client = _httpClientFactory.CreateClient("paymentapi");
-                client.SetBearerToken(accessToken);
 
                 var content = await client.GetStringAsync("/payments/get");
 
                 var json = JObject.Parse(content);
                 json.TryGetValue("name", out var value);
                 string name = value.ToString();
-
                 string str = "Got Data " + name + " (Access token exires in " + ((int)tokenExpiresInSec).ToString() + " sec)";
 
                 return Content("{ \"name\":" + "\"" + str + "\" }");
-
             }
             catch (Exception exc)
             {
@@ -95,18 +131,20 @@ namespace Client.Controllers
         }
 
 
-
-        private int CalculateWhenTokenExpires(string accessToken)
+        private int CalculateWhenAccessTokenExpires()
         {
+            //We get the access token just to be able to calculate when it expires
+            var accessToken = HttpContext.GetUserAccessTokenAsync().Result;
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.ReadJwtToken(accessToken);
-            //var ValidFrom = token.ValidFrom;
+            var ValidFrom = token.ValidFrom;
             var ValidTo = token.ValidTo;
+
             var tokenExpiresInSec = (int)ValidTo.Subtract(DateTime.UtcNow).TotalSeconds;
 
             return tokenExpiresInSec;
         }
-
 
         /// <summary>
         /// Get a new access token and refresh token from IdentitytServer and update it in the cookie	 
