@@ -35,7 +35,13 @@ namespace Client
             {
                 services.AddDataProtectionWithSqlServerForClient(_configuration);
             }
-
+            services.AddTransient<SerilogHttpMessageHandler>();
+            services.AddHttpClient("paymentapi", client =>
+            {
+                client.BaseAddress = new Uri(_configuration["paymentApiUrl"]);
+                client.Timeout = TimeSpan.FromSeconds(5);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            }).AddHttpMessageHandler<SerilogHttpMessageHandler>();
             services.AddControllersWithViews();
             services.AddHsts(opts =>
             {
@@ -84,6 +90,7 @@ namespace Client
                     options.BackchannelHttpHandler = new BackChannelListener();
                     options.BackchannelTimeout = TimeSpan.FromSeconds(5);
                 });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
